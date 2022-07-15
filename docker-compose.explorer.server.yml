@@ -1,0 +1,11 @@
+version: '3'
+services:
+  explorerServer:
+    image: golang:1.18.3
+    volumes:
+      - ./chain:/home/chain
+    ports:
+      - "9090:9090"
+    restart: always
+    working_dir: /home/chain/explorer/server
+    command: /bin/bash -c "./main"

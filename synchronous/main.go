@@ -47,21 +47,24 @@ type ESBlock struct {
 }
 
 type ESTx struct {
-	TxType    byte            `json:"type"                        gencodec:"required"`
-	Nonce     uint64          `json:"nonce"`
-	GasPrice  string          `json:"gasPrice"                    gencodec:"required"`
-	GasTipCap string          `json:"maxPriorityFeePerGas"        gencodec:"required"`
-	GasFeeCap string          `json:"maxFeePerGas"                gencodec:"required"`
-	Gas       uint64          `json:"gas"                         gencodec:"required"`
-	Value     string          `json:"value"                       gencodec:"required"`
-	Data      []byte          `json:"input"                       gencodec:"required"`
-	Number    string          `json:"number"                      gencodec:"required"`
-	V         string          `json:"v"                           gencodec:"required"`
-	R         string          `json:"r"                           gencodec:"required"`
-	S         string          `json:"s"                           gencodec:"required"`
-	To        *common.Address `json:"to"                          gencodec:"required"`
-	Hash      common.Hash     `json:"hash"                        gencodec:"required"`
-	Time      uint64          `json:"timestamp"        gencodec:"required"`
+	TxType     byte             `json:"type"                        gencodec:"required"`
+	Nonce      uint64           `json:"nonce"`
+	GasPrice   string           `json:"gasPrice"                    gencodec:"required"`
+	GasTipCap  string           `json:"maxPriorityFeePerGas"        gencodec:"required"`
+	GasFeeCap  string           `json:"maxFeePerGas"                gencodec:"required"`
+	Gas        uint64           `json:"gas"                         gencodec:"required"`
+	Value      string           `json:"value"                       gencodec:"required"`
+	Data       []byte           `json:"input"                       gencodec:"required"`
+	Number     string           `json:"number"                      gencodec:"required"`
+	V          string           `json:"v"                           gencodec:"required"`
+	R          string           `json:"r"                           gencodec:"required"`
+	S          string           `json:"s"                           gencodec:"required"`
+	To         *common.Address  `json:"to"                          gencodec:"required"`
+	Hash       common.Hash      `json:"hash"                        gencodec:"required"`
+	Time       uint64           `json:"timestamp"                   gencodec:"required"`
+	From       common.Address   `json:"from"                        gencodec:"required"`
+	AccessList types.AccessList `json:"accessList"                  gencodec:"required"`
+	IsFake     bool             `json:"isFake"                  gencodec:"required"`
 }
 
 type ESBlockHit1 struct {
@@ -222,7 +225,6 @@ func sync(ethclient *ethclient.Client) {
 				txBuf.WriteByte('\n')
 				esTx := new(ESTx)
 				esTx.TxType = tx.Type()
-
 				esTx.Nonce = tx.Nonce()
 				esTx.GasPrice = tx.GasPrice().String()
 				esTx.GasTipCap = tx.GasTipCap().String()
@@ -239,7 +241,15 @@ func sync(ethclient *ethclient.Client) {
 				esTx.S = s.String()
 				esTx.Time = header.Time
 
-				
+				msg, asMsgErr := tx.AsMessage(types.LatestSignerForChainID(tx.ChainId()), tx.GasPrice())
+				if asMsgErr != nil {
+					logger.Error("as message 出错")
+					panic(asMsgErr)
+				}
+
+				esTx.IsFake = msg.IsFake()
+				esTx.AccessList = msg.AccessList()
+				esTx.From = msg.From()
 
 				paramsStr, paramsErr := json.Marshal(esTx)
 				if paramsErr != nil {
