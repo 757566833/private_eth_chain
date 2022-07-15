@@ -1,0 +1,8 @@
+version: '3'
+services:
+  rpc:
+    image: ethereum/client-go:alltools-v1.10.20
+    volumes:
+      - ./chain:/home/chain
+      - ./.ethereum:/root/.ethereum
+    entrypoint: geth init --datadir /home/chain/rpc /home/chain/genesis.json

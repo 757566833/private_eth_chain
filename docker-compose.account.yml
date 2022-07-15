@@ -1,0 +1,8 @@
+version: '3'
+services:
+  account:
+    image: ethereum/client-go:alltools-v1.10.20
+    volumes:
+      - ./chain:/home/chain
+      - ./.ethereum:/root/.ethereum
+    entrypoint: geth account new --datadir /home/chain/account --password /home/chain/password

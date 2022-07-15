@@ -1,0 +1,8 @@
+version: '3'
+services:
+  miner:
+    image: ethereum/client-go:alltools-v1.10.20
+    volumes:
+      - ./chain:/home/chain
+      - ./.ethereum:/root/.ethereum
+    entrypoint: geth init --datadir /home/chain/miner /home/chain/genesis.json

@@ -1,0 +1,11 @@
+version: '3'
+services:
+  admin:
+    image: golang:1.18.3
+    volumes:
+      - ./chain:/home/chain
+    ports:
+      - "8080:8080"
+    restart: always
+    working_dir: /home/chain/admin
+    command: /bin/bash -c "./main"

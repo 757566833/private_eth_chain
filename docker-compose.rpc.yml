@@ -1,0 +1,13 @@
+version: '3'
+services:
+  rpc:
+    image: ethereum/client-go:alltools-v1.10.20
+    volumes:
+      - ./chain:/home/chain
+      - ./.ethereum:/root/.ethereum
+    ports:
+      - "30305:30305"
+      - "8545:8545"
+      - "8546:8546"
+    restart: always
+    entrypoint: geth --datadir /home/chain/rpc --networkid 8549140784658 --port 30305 --bootnodes "enr:-KO4QAqhWoBJUqopYe8MhN_dVNsOiYfLVE7lD1necnJFLc32fpy_b9_oqvuvBwRlHXA1auH2xBoC43F6nkZZLdAKZ2yGAYH_xFtZg2V0aMfGhI2HPGSAgmlkgnY0gmlwhMCo9haJc2VjcDI1NmsxoQPdz-k6sANgz17Mtc4YKtRcf9k8T51AOQbcH2dWr75ZeIRzbmFwwIN0Y3CCdl-DdWRwgnZf" --http --http.api personal,eth,net,web3 --http.corsdomain '*' --http.addr 0.0.0.0  --ws --ws.api eth,net,web3 --ws.origins "*" --ws.addr 0.0.0.0  --syncmode full

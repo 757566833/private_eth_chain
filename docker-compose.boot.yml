@@ -1,0 +1,11 @@
+version: '3'
+services:
+  boot:
+    image: ethereum/client-go:alltools-v1.10.20
+    volumes:
+      - ./chain:/home/chain
+      - ./.ethereum:/root/.ethereum
+    ports:
+      - "30303:30303"
+    restart: always
+    entrypoint: geth --datadir /home/chain/boot --networkid 8549140784658 --nat extip:192.168.246.22
