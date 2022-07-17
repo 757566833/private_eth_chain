@@ -6,6 +6,7 @@ import { timeRender } from "@/lib/time";
 import modal from '@/lib/modal'
 import { useRouter } from 'next/router';
 import { ETxType } from '@/constant/enum';
+import Provider from '@/instance/provider';
 interface TablePaginationActionsProps {
     count: number;
     page: number;
@@ -30,10 +31,11 @@ const Address: React.FC = () => {
     const theme = useTheme();
     const [page, setPage] = useState(1);
     const [data, setData] = useState<ITx[]>([])
+    const [balance, setbalance] = useState("")
     const router = useRouter();
-    const {query} = router
-    const {address} = query
-    const func1 = useCallback(async (page: number,address:string) => {
+    const { query } = router
+    const { address } = query
+    const func1 = useCallback(async (page: number, address: string) => {
         const res = await fetch(`http://127.0.0.1:9090/address/${address}?page=${page}&size=10`)
         const response: IResponseList<ITx> = await res.json()
         const hits = response.hits.hits
@@ -43,26 +45,36 @@ const Address: React.FC = () => {
         }
         setData(nextData)
     }, [])
-
+    const func2 = useCallback(async (address: string) => {
+        console.log()
+        const instance = await Provider.getInstance();
+        const res = await instance.getBalance(address)
+        console.log(res)
+        setbalance(res.toString())
+    }, [])
     const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setPage(page - 1);
     };
 
     const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setPage( page + 1);
+        setPage(page + 1);
     };
 
 
     useEffect(() => {
-        if(address){
-            func1(page,address.toString())
+        if (address) {
+            func1(page, address.toString())
+            func2(address.toString())
         }
-       
-    }, [page,address])
+
+    }, [page, address])
 
     return <Box>
         <Typography variant="h5" fontWeight={'bold'}>
             address
+        </Typography>
+        <Typography variant="body1" >
+            {balance}
         </Typography>
         <TableContainer component={Paper} elevation={0} variant='outlined'>
             <Table>
@@ -111,23 +123,25 @@ const Address: React.FC = () => {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <Box display={'flex'}>
-                            
-                            <IconButton
-                                onClick={handleBackButtonClick}
-                                disabled={page === 0}
-                                aria-label="previous page"
-                            >
-                                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                            </IconButton>
-                            <IconButton
-                                onClick={handleNextButtonClick}
-                                aria-label="next page"
-                            >
-                                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                            </IconButton>
-                            
-                        </Box>
+                        <TableCell>
+                            <Box display={'flex'}>
+
+                                <IconButton
+                                    onClick={handleBackButtonClick}
+                                    disabled={page === 0}
+                                    aria-label="previous page"
+                                >
+                                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                                </IconButton>
+                                <IconButton
+                                    onClick={handleNextButtonClick}
+                                    aria-label="next page"
+                                >
+                                    {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                                </IconButton>
+
+                            </Box>
+                        </TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>

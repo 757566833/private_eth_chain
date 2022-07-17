@@ -311,7 +311,7 @@ func main() {
 	logger.Info("logger construction succeeded")
 
 	ec, err := elasticsearch.NewClient(elasticsearch.Config{Addresses: []string{
-		"http://192.168.246.22:9200",
+		"http://192.168.31.153:30200",
 	}})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
@@ -359,7 +359,7 @@ func main() {
 		}
 	}
 	// _path := "/home/chain/rpc/geth.ipc"
-	_path := "http://192.168.246.22:8545"
+	_path := "http://192.168.31.252:8545"
 	// bootClient, err := rpc.Dial(_path)
 	// if err != nil {
 	// 	panic(err)

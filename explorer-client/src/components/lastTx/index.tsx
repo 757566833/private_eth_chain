@@ -5,6 +5,7 @@ import { timeRender } from "@/lib/time";
 import { weiToEth, weiToGwei } from '@/lib/utils/eth';
 import { useClintNavigation } from '@/hooks/navigation';
 import Link from 'next/link';
+import { ETxType } from '@/constant/enum';
 const LastTx: React.FC = () => {
     const [data, setData] = useState<ITx[]>([])
     const [navigation] = useClintNavigation();
@@ -36,13 +37,12 @@ const LastTx: React.FC = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>hash</TableCell>
-                        <TableCell>number</TableCell>
-                        <TableCell>timestamp</TableCell>
-                        <TableCell>gasPrice(gwei)</TableCell>
-                        <TableCell>limit</TableCell>
-                        <TableCell>to</TableCell>
+                        {/* <TableCell>number</TableCell> */}
+                        <TableCell>gas</TableCell>
 
+                        <TableCell>address</TableCell>
                         <TableCell>value</TableCell>
+                        <TableCell>交易类型</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -50,22 +50,30 @@ const LastTx: React.FC = () => {
                         <TableRow
                             key={item._source?.hash}
                         >
-                            <TableCell><Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link href={`/tx/${item._source?.hash}`}>{item._source?.hash}</Link></Box></TableCell>
-                            <TableCell>{item._source?.number}</TableCell>
-                            <TableCell>{timeRender(item._source?.timestamp)}</TableCell>
-                            <TableCell>{weiToGwei(item._source?.gasPrice)}</TableCell>
-                            <TableCell>{item._source.gas}</TableCell>
-                            <TableCell><Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link href={`/address/${item._source?.to}`}>{item._source?.to}</Link></Box></TableCell>
-                            <TableCell>{weiToEth(item._source?.value)}</TableCell>
+                            <TableCell>
+                                <Box style={{ width: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link href={`/tx/${item._source?.hash}`}>{item._source?.hash}</Link></Box>
+                                <Box>{timeRender(item._source?.timestamp)}</Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box>
+                                    gas: {weiToGwei(item._source?.gasPrice)}(gwei)
+                                </Box>
+                                <Box>
+                                    limit: {item._source.gas}
+                                </Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>from: <Link href={`/address/${item._source?.from}`}>{item._source?.from}</Link></Box>
+                                <Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>to: <Link href={`/address/${item._source?.to}`}>{item._source?.to}</Link></Box>
+                            </TableCell>
+                            <TableCell>{weiToEth(item._source?.value)} eth</TableCell>
+                            <TableCell>{ETxType[item._source?.type]}</TableCell>
 
                         </TableRow>
                     ))}
                 </TableBody>
                 <TableFooter>
-                    <Box flex={1}></Box>
-                    <TableRow>
-                        <Button onClick={handleAll}>查看全部</Button>
-                    </TableRow>
+                    <TableRow><TableCell><Link href={'/txs'}>查看全部</Link></TableCell></TableRow>
                 </TableFooter>
             </Table>
         </TableContainer>

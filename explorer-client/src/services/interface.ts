@@ -60,10 +60,12 @@ export interface ITx{
         'r': string
         's': string
         'timestamp': number
+        'from':string
         'to': string
         'type': number
         'v': string
         'value': string
+        isFake:boolean
     },
     "_type": string,
     "sort": number[]

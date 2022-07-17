@@ -8,4 +8,4 @@ services:
     ports:
       - "30307:30307"
     restart: always
-    entrypoint: geth --datadir /home/chain/miner --networkid 8549140784658 --port 30307 --bootnodes "enr:-KO4QAqhWoBJUqopYe8MhN_dVNsOiYfLVE7lD1necnJFLc32fpy_b9_oqvuvBwRlHXA1auH2xBoC43F6nkZZLdAKZ2yGAYH_xFtZg2V0aMfGhI2HPGSAgmlkgnY0gmlwhMCo9haJc2VjcDI1NmsxoQPdz-k6sANgz17Mtc4YKtRcf9k8T51AOQbcH2dWr75ZeIRzbmFwwIN0Y3CCdl-DdWRwgnZf" --unlock 0x008aB3Eb1F5898a0367f39138a04cd57eb7e5141 --mine --keystore /home/chain/account/keystore --password /home/chain/password  --miner.threads 1
+    entrypoint: geth --datadir /home/chain/miner --networkid 8549140784658 --port 30307 --bootnodes "enr:-KO4QMMxjBZ4mZlyP7G841dsCqrnLexbcQDo2ytNNdMzaBswTpBIHhwGZ3ERptHT7H9MipduQcAGHXEB4SL4zYk0EKOGAYIHp3aDg2V0aMfGhDdAgD2AgmlkgnY0gmlwhMCoH_yJc2VjcDI1NmsxoQNPBYcxtMwrRkan0ORifbBO47NMEHiWo0xNu1da14WfvoRzbmFwwIN0Y3CCdl-DdWRwgnZf" --unlock 0x4432047680544F439f269fBAf47997Ac6594B03c --mine --keystore /home/chain/account/keystore --password /home/chain/password  --miner.threads 1

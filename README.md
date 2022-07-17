@@ -145,7 +145,7 @@ docker-compose -f docker-compose.boot.yml up -d
 6. 获取enr  
 ```
 // 有两个选择 第一种启动admin服务 访问 http://127.0.0.1:8080/nodeInfo 这种是针对将来 其他节点加入 方便获取enr做的
-// admin是一个go项目，将其打包生成main，复制admin文件夹到chain文件夹
+// admin是一个go项目，将其打包生成main，复制admin文件夹到chain文件夹 记得修改elastic search 的地址
 docker-compose -f docker-compose.admin.yml up -d
 
 // 第二种 内部查看 新建终端
@@ -172,7 +172,7 @@ docker-compose -f docker-compose.create.miner.yml up
 
 8. 启动miner服务
 ```
-// 记得 修改entrypoint部分的链id ，ip设置为当前机器的对外ip
+// 记得 修改entrypoint部分的链id ，ip设置为当前机器的对外ip   地址也要修改
 docker-compose -f docker-compose.miner.yml up -d
 ```
 
@@ -180,6 +180,12 @@ docker-compose -f docker-compose.miner.yml up -d
 ```
 // 修改ip后
 docker-compose -f docker-compose.explorer.yml up -d
+```
+
+10. 开启同步服务
+```
+// build synchronous
+
 ```
 
 

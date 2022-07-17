@@ -4,14 +4,7 @@ services:
   ethereum-lite-explorer:
     image: alethio/ethereum-lite-explorer
     ports:
-      - "3010:80"
-    restart: always
-    environment:
-    - APP_NODE_URL=HTTP://192.168.246.22:7545
-  ethereum-lite-explorer2:
-    image: alethio/ethereum-lite-explorer
-    ports:
       - "3020:80"
     restart: always
     environment:
-    - APP_NODE_URL=HTTP://192.168.246.22:8545
+    - APP_NODE_URL=HTTP://192.168.31.252:8545

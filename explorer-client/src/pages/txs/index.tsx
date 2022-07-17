@@ -82,6 +82,7 @@ const Txs: React.FC = () => {
                         <TableCell>r</TableCell>
                         <TableCell>s</TableCell>
                         <TableCell>v</TableCell>
+                        <TableCell>from</TableCell>
                         <TableCell>to</TableCell>
                         <TableCell>type</TableCell>
                         <TableCell>value</TableCell>
@@ -109,6 +110,7 @@ const Txs: React.FC = () => {
                             <TableCell>{item._source?.r}</TableCell>
                             <TableCell>{item._source?.s}</TableCell>
                             <TableCell>{item._source?.v}</TableCell>
+                            <TableCell>{item._source?.from}</TableCell>
                             <TableCell>{item._source?.to}</TableCell>
                             <TableCell>{ETxType[item._source?.type]}</TableCell>
                             <TableCell>{item._source?.value}</TableCell>

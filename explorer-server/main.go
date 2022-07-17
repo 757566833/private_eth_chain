@@ -243,6 +243,13 @@ func getAddress(c *gin.Context) {
 					"value": "` + address + `"
 				  }
 				}
+			  },
+			  {
+				"term": {
+				  "from": {
+					"value": "` + address + `"
+				  }
+				}
 			  }
 			]
 		  }
@@ -300,7 +307,7 @@ func CORSMiddleware() gin.HandlerFunc {
 
 func main() {
 	ec, err := elasticsearch.NewClient(elasticsearch.Config{Addresses: []string{
-		"http://192.168.246.22:9200",
+		"http://192.168.31.153:30200",
 	}})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)

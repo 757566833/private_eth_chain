@@ -52,7 +52,7 @@ func getEs(c *gin.Context) {
 
 func main() {
 	esClient, err := elasticsearch.NewClient(elasticsearch.Config{Addresses: []string{
-		"http://192.168.246.22:9200",
+		"http://192.168.31.153:30200",
 	}})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
@@ -88,5 +88,5 @@ func main() {
 	router.GET("/es", getEs)
 	router.GET("/nodeInfo/:node", getBootNodeInfo)
 	router.GET("/genesis", getGenesis)
-	router.Run("0.0.0.0:8090")
+	router.Run("0.0.0.0:8080")
 }
