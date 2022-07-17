@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Ellipsis from '@/lib/ellipsis';
 import Link from 'next/link';
 import { weiToEth, weiToGwei } from '@/lib/utils/eth';
+import { receiverTypeRender } from '@/utils/render';
 interface TablePaginationActionsProps {
     count: number;
     page: number;
@@ -80,7 +81,7 @@ const Txs: React.FC = () => {
                         <TableCell>gas</TableCell>
                         <TableCell>gasPrice</TableCell>
                         <TableCell>from</TableCell>
-                        <TableCell>to</TableCell>
+                        <TableCell>receiver</TableCell>
                         <TableCell>type</TableCell>
                         <TableCell>value</TableCell>
 
@@ -106,7 +107,7 @@ const Txs: React.FC = () => {
                             </TableCell>
                             <TableCell>
                                 <Ellipsis width={100}>
-                                    <Link href={`/address/${item._source?.to}`}>{item._source?.to||''}</Link>
+                                    {receiverTypeRender(item._source?.to,item._source?.contractAddress)}: <Link href={`/address/${item._source?.to||item._source?.contractAddress}`}>{item._source?.to||item._source?.contractAddress||''}</Link>
                                 </Ellipsis>
                             </TableCell>
                             <TableCell>{ETxType[item._source?.type]}</TableCell>

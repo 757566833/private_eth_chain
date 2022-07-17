@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { Box, AppBar, Toolbar, Grid, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, List, ListItem, ListItemAvatar, Avatar, ListItemText, TableFooter, Button } from '@mui/material'
+import { Box, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody,  TableFooter } from '@mui/material'
 import { IBlock, IResponseList } from "@/services/interface";
 import { timeRender } from "@/lib/time";
-import { useClintNavigation } from '@/hooks/navigation';
 const LastBlock: React.FC = () => {
     const [data, setData] = useState<IBlock[]>([])
     const func1 = useCallback(async () => {
@@ -40,7 +39,6 @@ const LastBlock: React.FC = () => {
                     {data.map((item: IBlock) => (
                         <TableRow
                             key={item._source?.number}
-
                         >
                             <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number||''}</Link></TableCell>
                             <TableCell>
@@ -48,8 +46,7 @@ const LastBlock: React.FC = () => {
                                 <Box>gasUsed: {item._source?.gasUsed}</Box>
                             </TableCell>
                             <TableCell>{timeRender(item._source?.timestamp)}</TableCell>
-                            <TableCell>{item._source?.txns}</TableCell>
-
+                            <TableCell><Link href={`/txs?block=${item._source?.number}`}>{item._source?.txns||'0'}</Link></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

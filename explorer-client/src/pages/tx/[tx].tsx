@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { ITx } from '@/services/interface';
 import { timeRender } from '@/lib/time';
 import { weiToEth, weiToGwei } from '@/lib/utils/eth';
-import { ETxType } from '@/constant/enum';
+import { ETxStatus, ETxType } from '@/constant/enum';
 import Link from 'next/link';
 
 const Block: React.FC = () => {
@@ -40,8 +40,14 @@ const Block: React.FC = () => {
                     <ListItemIcon sx={{ width: 280 }}>
                         number 所在块
                     </ListItemIcon>
-
                     <ListItemText primary={<Link href={`/block/${data._source?.number}`}>{data._source?.number||''}</Link>} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                        blockHash
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.blockHash} />
                 </ListItem>
                 <Divider />
                 <ListItem>
@@ -51,7 +57,13 @@ const Block: React.FC = () => {
                     <ListItemText primary={timeRender(data._source?.timestamp)} />
                 </ListItem>
                 <Divider />
-
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    status
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.status!=undefined?ETxStatus[data._source?.status]:''} />
+                </ListItem>
+                <Divider />
                 <ListItem>
                     <ListItemIcon sx={{ width: 280 }}>
                         from 发出方
@@ -61,9 +73,16 @@ const Block: React.FC = () => {
                 <Divider />
                 <ListItem>
                     <ListItemIcon sx={{ width: 280 }}>
-                        to 接收方
+                        to 
                     </ListItemIcon>
                     <ListItemText primary={data._source?.to} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    contractAddress 
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.contractAddress} />
                 </ListItem>
                 <Divider />
                 <ListItem>
@@ -77,7 +96,7 @@ const Block: React.FC = () => {
                     <ListItemIcon sx={{ width: 280 }}>
                         gas price
                     </ListItemIcon>
-                    <ListItemText primary={weiToGwei(data._source?.gasPrice)} />
+                    <ListItemText primary={`${weiToGwei(data._source?.gasPrice)} gwei`} />
                 </ListItem>
                 <Divider />
                 <ListItem>
@@ -87,6 +106,22 @@ const Block: React.FC = () => {
                     <ListItemText primary={data._source?.gas +` 发出的limit，实际可能并未消耗这么多，兼容性大坑`} />
                 </ListItem>
                 <Divider />
+                
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    gasUsed
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.gasUsed} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    cumulativeGasUsed
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.cumulativeGasUsed} />
+                </ListItem>
+                <Divider />
+                
                 <ListItem>
                     <ListItemIcon sx={{ width: 280 }}>
                         maxFeePerGas
@@ -148,6 +183,13 @@ const Block: React.FC = () => {
                         isFake
                     </ListItemIcon>
                     <ListItemText primary={`${data._source?.isFake}`} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    transactionIndex
+                    </ListItemIcon>
+                    <ListItemText primary={`${data._source?.transactionIndex}`} />
                 </ListItem>
             </List>
         </Paper>

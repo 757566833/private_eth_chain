@@ -1,9 +1,9 @@
-export interface IResponseList<T>{
+export interface IResponseList<T> {
     "_shards": {
         "failed": number,
-        "skipped":number,
+        "skipped": number,
         "successful": number,
-        "total":number,
+        "total": number,
     },
     "hits": {
         "hits": T[]
@@ -17,7 +17,7 @@ export interface IResponseList<T>{
     "took": number
 }
 
-export interface IBlock{
+export interface IBlock {
     "_id": string,
     "_index": string,
     "_score": string,
@@ -28,8 +28,8 @@ export interface IBlock{
         "gasLimit": number,
         "gasUsed": number,
         "logsBloom": string,
-        "miner":string,
-        "mixHash":string,
+        "miner": string,
+        "mixHash": string,
         "nonce": string,
         "number": string,
         "parentHash": string,
@@ -37,35 +37,48 @@ export interface IBlock{
         "sha3Uncles": string,
         "stateRoot": string,
         "timestamp": 0,
-        "transactionsRoot":string,
+        "transactionsRoot": string,
         "txns": 0
     },
     "_type": string,
     "sort": number[]
 }
 
-export interface ITx{
+export interface ITx {
     "_id": string,
     "_index": string,
     "_score": string,
     "_source": {
-        'gas': number
-        'gasPrice': string
-        'hash': string
-        'input': string
-        'maxFeePerGas': string
-        'maxPriorityFeePerGas': string
-        'nonce': number
-        'number': string
-        'r': string
-        's': string
-        'timestamp': number
-        'from':string
-        'to': string
-        'type': number
-        'v': string
-        'value': string
-        isFake:boolean
+        blockHash: string
+        blockNumber: string
+        contractAddress: string
+        cumulativeGasUsed: string
+        from: string
+        gas: number
+        gasPrice: string
+        gasUsed: string
+        hash: string
+        input: string
+        isFake: boolean
+        logs: string[]
+        logsBloom: string
+        maxFeePerGas: string
+        maxPriorityFeePerGas: string
+        nonce: number
+        number: string
+        postState: string
+        r: string
+        receiptType: number
+        s: string
+        status: number
+        timestamp: number
+        to: string
+        transactionHash: string
+        transactionIndex: number
+        type: number
+        v: string
+        value: string
+
     },
     "_type": string,
     "sort": number[]

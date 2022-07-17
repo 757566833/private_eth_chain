@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { Box, Button, TableFooter, Grid, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@mui/material'
+import { Box, TableFooter, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import { IResponseList, ITx } from "@/services/interface";
 import { timeRender } from "@/lib/time";
 import { weiToEth, weiToGwei } from '@/lib/utils/eth';
-import { useClintNavigation } from '@/hooks/navigation';
 import Link from 'next/link';
 import { ETxType } from '@/constant/enum';
 import Ellipsis from '@/lib/ellipsis';
+import { receiverTypeRender } from '@/utils/render';
+
 const LastTx: React.FC = () => {
     const [data, setData] = useState<ITx[]>([])
-    const [navigation] = useClintNavigation();
     const func1 = useCallback(async () => {
         const res = await fetch('http://127.0.0.1:9090/txs?size=10')
         const response: IResponseList<ITx> = await res.json()
@@ -19,9 +19,6 @@ const LastTx: React.FC = () => {
             nextData.push(iterator)
         }
         setData(nextData)
-    }, [])
-    const handleAll = useCallback(() => {
-        navigation.push('/txs')
     }, [])
     useEffect(() => {
         func1()
@@ -40,10 +37,9 @@ const LastTx: React.FC = () => {
                         <TableCell>hash</TableCell>
                         {/* <TableCell>number</TableCell> */}
                         <TableCell>gas</TableCell>
-
                         <TableCell>address</TableCell>
                         <TableCell>value</TableCell>
-                        <TableCell>交易类型</TableCell>
+                        <TableCell>模型</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -71,10 +67,10 @@ const LastTx: React.FC = () => {
                                 from: <Link href={`/address/${item._source?.from}`}>{item._source?.from||''}</Link>
                                 </Ellipsis>
                                 <Ellipsis width={100}>
-                                to: <Link href={`/address/${item._source?.to}`}>{item._source?.to||''}</Link>
+                                {item._source?.to?'to':'contract'}: <Link href={`/address/${item._source?.to||item._source?.contractAddress}`}>{item._source?.to||item._source?.contractAddress||''}</Link>
                                 </Ellipsis>
                             </TableCell>
-                            <TableCell>{weiToEth(item._source?.value)} eth</TableCell>
+                            <TableCell><Box>{weiToEth(item._source?.value)} eth</Box><Box>{receiverTypeRender(item._source.to,item._source.contractAddress)}</Box></TableCell>
                             <TableCell>{ETxType[item._source?.type]}</TableCell>
 
                         </TableRow>

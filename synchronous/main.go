@@ -47,7 +47,7 @@ type ESBlock struct {
 }
 
 type ESTx struct {
-	TxType     byte             `json:"type"                        gencodec:"required"`
+	Type       byte             `json:"type"                        gencodec:"required"`
 	Nonce      uint64           `json:"nonce"`
 	GasPrice   string           `json:"gasPrice"                    gencodec:"required"`
 	GasTipCap  string           `json:"maxPriorityFeePerGas"        gencodec:"required"`
@@ -64,7 +64,27 @@ type ESTx struct {
 	Time       uint64           `json:"timestamp"                   gencodec:"required"`
 	From       common.Address   `json:"from"                        gencodec:"required"`
 	AccessList types.AccessList `json:"accessList"                  gencodec:"required"`
-	IsFake     bool             `json:"isFake"                  gencodec:"required"`
+	IsFake     bool             `json:"isFake"                      gencodec:"required"`
+
+	// receipt
+	ReceiptType       uint8        `json:"receiptType"`
+	PostState         []byte       `json:"postState"`
+	Status            uint64       `json:"status"`
+	CumulativeGasUsed uint64       `json:"cumulativeGasUsed"       gencodec:"required"`
+	Bloom             types.Bloom  `json:"logsBloom"               gencodec:"required"`
+	Logs              []*types.Log `json:"logs"                    gencodec:"required"`
+
+	// Implementation fields: These fields are added by geth when processing a transaction.
+	// They are stored in the chain database.
+	TxHash          common.Hash    `json:"transactionHash"         gencodec:"required"`
+	ContractAddress common.Address `json:"contractAddress"`
+	GasUsed         uint64         `json:"gasUsed"                 gencodec:"required"`
+
+	// Inclusion information: These fields provide information about the inclusion of the
+	// transaction corresponding to this receipt.
+	BlockHash        common.Hash `json:"blockHash"`
+	BlockNumber      *big.Int    `json:"blockNumber"`
+	TransactionIndex uint        `json:"transactionIndex"`
 }
 
 type ESBlockHit1 struct {
@@ -224,7 +244,7 @@ func sync(ethclient *ethclient.Client) {
 				txBuf.Write(createStr)
 				txBuf.WriteByte('\n')
 				esTx := new(ESTx)
-				esTx.TxType = tx.Type()
+				esTx.Type = tx.Type()
 				esTx.Nonce = tx.Nonce()
 				esTx.GasPrice = tx.GasPrice().String()
 				esTx.GasTipCap = tx.GasTipCap().String()
@@ -251,6 +271,24 @@ func sync(ethclient *ethclient.Client) {
 				esTx.AccessList = msg.AccessList()
 				esTx.From = msg.From()
 
+				receipt, receiptErr := ethclient.TransactionReceipt(context.Background(), tx.Hash())
+				if receiptErr != nil {
+					logger.Error("as message 出错")
+					panic(receiptErr)
+				}
+
+				esTx.ReceiptType = receipt.Type
+				esTx.PostState = receipt.PostState
+				esTx.Status = receipt.Status
+				esTx.CumulativeGasUsed = receipt.CumulativeGasUsed
+				esTx.Bloom = receipt.Bloom
+				esTx.Logs = receipt.Logs
+				esTx.TxHash = receipt.TxHash
+				esTx.ContractAddress = receipt.ContractAddress
+				esTx.GasUsed = receipt.GasUsed
+				esTx.BlockHash = receipt.BlockHash
+				esTx.BlockNumber = receipt.BlockNumber
+				esTx.TransactionIndex = receipt.TransactionIndex
 				paramsStr, paramsErr := json.Marshal(esTx)
 				if paramsErr != nil {
 					logger.Error("序列化批量创建参数出错")

@@ -16,8 +16,15 @@ export enum ENUM_BREAK_POINTS{
     XL='xl'
 }
 // https://ethereum.org/en/developers/docs/transactions/#types-of-transactions
+// https://eips.ethereum.org/EIPS/eip-3709
+// 目前删除了1的支持，1全转为2
 export enum ETxType{
-    常规交易=0,
-    合约部署交易=1,
-    合约执行=2
+    Legacy=0,
+    "EIP-3709"=1,
+    "EIP-1559"=2
+}
+
+export enum ETxStatus{
+    'fail'=0,
+    'success'=1
 }
