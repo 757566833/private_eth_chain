@@ -3,7 +3,7 @@ import { Box, List, ListItem, ListItemText, Typography, Divider, Paper, ListItem
 import { useRouter } from 'next/router'
 import { ITx } from '@/services/interface';
 import { timeRender } from '@/lib/time';
-import { weiToEth } from '@/lib/utils/eth';
+import { weiToEth, weiToGwei } from '@/lib/utils/eth';
 import { ETxType } from '@/constant/enum';
 import Link from 'next/link';
 
@@ -41,7 +41,7 @@ const Block: React.FC = () => {
                         number 所在块
                     </ListItemIcon>
 
-                    <ListItemText primary={data._source?.number?<Link href={`/block/${data._source?.number}`}>{data._source?.number}</Link>:''} />
+                    <ListItemText primary={<Link href={`/block/${data._source?.number}`}>{data._source?.number||''}</Link>} />
                 </ListItem>
                 <Divider />
                 <ListItem>
@@ -77,7 +77,7 @@ const Block: React.FC = () => {
                     <ListItemIcon sx={{ width: 280 }}>
                         gas price
                     </ListItemIcon>
-                    <ListItemText primary={data._source?.gasPrice} />
+                    <ListItemText primary={weiToGwei(data._source?.gasPrice)} />
                 </ListItem>
                 <Divider />
                 <ListItem>

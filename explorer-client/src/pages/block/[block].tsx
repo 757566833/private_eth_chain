@@ -9,7 +9,6 @@ import modal from '@/lib/modal';
 
 const Block: React.FC = () => {
     const router = useRouter();
-    const [navigation] = useClintNavigation();
     const { query } = router
     const { block } = query
     const [data, setData] = useState<Partial<IBlock>>({})

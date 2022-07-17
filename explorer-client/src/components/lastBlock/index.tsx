@@ -42,7 +42,7 @@ const LastBlock: React.FC = () => {
                             key={item._source?.number}
 
                         >
-                            <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number}</Link></TableCell>
+                            <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number||''}</Link></TableCell>
                             <TableCell>
                                 <Box>gasLimit: {item._source?.gasLimit}</Box>
                                 <Box>gasUsed: {item._source?.gasUsed}</Box>

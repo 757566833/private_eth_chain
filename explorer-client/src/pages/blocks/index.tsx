@@ -35,7 +35,7 @@ const Blocks: React.FC = () => {
         func1(page)
     }, [page])
 
-    return <Box>
+    return <Box width={1400} margin='0 auto'>
         <Typography variant="h5" fontWeight={'bold'}>
             blocks
         </Typography>
@@ -46,21 +46,9 @@ const Blocks: React.FC = () => {
                         <TableCell>number</TableCell>
                         <TableCell>timestamp</TableCell>
                         <TableCell>txs</TableCell>
-                        <TableCell>baseFeePerGas</TableCell>
                         <TableCell>difficulty</TableCell>
-                        <TableCell>extraData</TableCell>
                         <TableCell>gasLimit</TableCell>
                         <TableCell>gasUsed</TableCell>
-                        <TableCell>logsBloom</TableCell>
-                        <TableCell>miner</TableCell>
-                        <TableCell>mixHash</TableCell>
-                        <TableCell>nonce</TableCell>
-                        <TableCell>parentHash</TableCell>
-                        <TableCell>receiptsRoot</TableCell>
-                        <TableCell>sha3Uncles</TableCell>
-                        <TableCell>stateRoot</TableCell>
-                        <TableCell>transactionsRoot</TableCell>
-
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -68,45 +56,34 @@ const Blocks: React.FC = () => {
                         <TableRow
                             key={item._source?.number}
                         >
-                            <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number}</Link></TableCell>
+                            <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number||''}</Link></TableCell>
                             <TableCell ><Box width={180}>{timeRender(item._source?.timestamp)}</Box></TableCell>
-                            <TableCell>{item._source?.txns}</TableCell>
-                            <TableCell>{item._source?.baseFeePerGas}</TableCell>
+                            <TableCell><Link href={`/txs?block=${item._source?.number}`}>{item._source?.txns||''}</Link></TableCell>
                             <TableCell>{item._source?.difficulty}</TableCell>
-                            <TableCell><Button sx={{ width: 80 }} onClick={() => modal.info({ title: '详情', content: item._source?.extraData })}>查看详情</Button></TableCell>
                             <TableCell>{item._source?.gasLimit}</TableCell>
                             <TableCell>{item._source?.gasUsed}</TableCell>
-                            <TableCell><Button sx={{ width: 80 }} onClick={() => modal.info({ title: '详情', content: item._source?.logsBloom })}>查看详情</Button></TableCell>
-                            <TableCell>{item._source?.miner}</TableCell>
-                            <TableCell>{item._source?.mixHash}</TableCell>
-                            <TableCell>{item._source?.nonce}</TableCell>
-                            <TableCell>{item._source?.parentHash}</TableCell>
-                            <TableCell>{item._source?.receiptsRoot}</TableCell>
-                            <TableCell>{item._source?.sha3Uncles}</TableCell>
-                            <TableCell>{item._source?.stateRoot}</TableCell>
-                            <TableCell>{item._source?.transactionsRoot}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <Box display={'flex'}>
-
-                            <IconButton
-                                onClick={handleBackButtonClick}
-                                disabled={page === 0}
-                                aria-label="previous page"
-                            >
-                                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                            </IconButton>
-                            <IconButton
-                                onClick={handleNextButtonClick}
-                                aria-label="next page"
-                            >
-                                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                            </IconButton>
-
-                        </Box>
+                        <TableCell>
+                            <Box display={'flex'}>
+                                <IconButton
+                                    onClick={handleBackButtonClick}
+                                    disabled={page === 0}
+                                    aria-label="previous page"
+                                >
+                                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                                </IconButton>
+                                <IconButton
+                                    onClick={handleNextButtonClick}
+                                    aria-label="next page"
+                                >
+                                    {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                                </IconButton>
+                            </Box>
+                        </TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { Box, AppBar, TablePagination, TableFooter, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, List, ListItem, ListItemAvatar, Avatar, ListItemText, Button, useTheme, IconButton } from '@mui/material'
+import Link from 'next/link';
+import { Box, Chip, TablePagination, TableFooter, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, List, ListItem, ListItemAvatar, Avatar, ListItemText, Button, useTheme, IconButton } from '@mui/material'
 import { LastPage, FirstPage, KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material'
 import { ITx, IResponseList } from "@/services/interface";
 import { timeRender } from "@/lib/time";
@@ -7,6 +8,8 @@ import modal from '@/lib/modal'
 import { useRouter } from 'next/router';
 import { ETxType } from '@/constant/enum';
 import Provider from '@/instance/provider';
+import { weiToEth } from '@/lib/utils/eth';
+import Ellipsis from '@/lib/ellipsis';
 interface TablePaginationActionsProps {
     count: number;
     page: number;
@@ -69,12 +72,12 @@ const Address: React.FC = () => {
 
     }, [page, address])
 
-    return <Box>
+    return <Box width={1400} margin='0 auto'>
         <Typography variant="h5" fontWeight={'bold'}>
             address
         </Typography>
         <Typography variant="body1" >
-            {balance}
+            {weiToEth(balance)} eth
         </Typography>
         <TableContainer component={Paper} elevation={0} variant='outlined'>
             <Table>
@@ -82,16 +85,8 @@ const Address: React.FC = () => {
                     <TableRow>
                         <TableCell>hash</TableCell>
                         <TableCell>timestamp</TableCell>
-                        <TableCell>gas</TableCell>
-                        <TableCell>gasPrice</TableCell>
-                        <TableCell>maxFeePerGas</TableCell>
-                        <TableCell>maxPriorityFeePerGas</TableCell>
-                        <TableCell>nonce</TableCell>
-                        <TableCell>input</TableCell>
                         <TableCell>number</TableCell>
-                        <TableCell>r</TableCell>
-                        <TableCell>s</TableCell>
-                        <TableCell>v</TableCell>
+                        <TableCell>from</TableCell>
                         <TableCell>to</TableCell>
                         <TableCell>type</TableCell>
                         <TableCell>value</TableCell>
@@ -103,21 +98,36 @@ const Address: React.FC = () => {
                         <TableRow
                             key={item._source?.number}
                         >
-                            <TableCell>{item._source?.hash}</TableCell>
-                            <TableCell ><Box width={180}>{timeRender(item._source?.timestamp)}</Box></TableCell>
-                            <TableCell>{item._source?.gas}</TableCell>
-                            <TableCell>{item._source?.gasPrice}</TableCell>
-                            <TableCell>{item._source?.maxFeePerGas}</TableCell>
-                            <TableCell>{item._source?.maxPriorityFeePerGas}</TableCell>
-                            <TableCell>{item._source?.nonce}</TableCell>
-                            <TableCell><Button sx={{ width: 80 }} onClick={() => modal.info({ title: '详情', content: item._source?.input })}>查看详情</Button></TableCell>
-                            <TableCell>{item._source?.number}</TableCell>
-                            <TableCell>{item._source?.r}</TableCell>
-                            <TableCell>{item._source?.s}</TableCell>
-                            <TableCell>{item._source?.v}</TableCell>
-                            <TableCell>{item._source?.to}</TableCell>
+                            <TableCell>
+                                <Ellipsis width={160}>
+                                    <Link href={`/tx/${item._source?.hash}`}>{item._source?.hash || ''}</Link>
+                                </Ellipsis>
+                            </TableCell>
+                            <TableCell >
+                                <Box width={140}>{timeRender(item._source?.timestamp)}</Box>
+                            </TableCell>
+                            <TableCell><Link href={`/block/${item._source?.number}`}>{item._source?.number || ''}</Link></TableCell>
+                            <TableCell>
+                                {address == item._source.from ? <Chip label={<Ellipsis width={160}>
+                                    <Link href={`/address/${item._source?.from}`} passHref={true}>
+                                        <a style={{ color: '#ffffff' }}>{item._source?.from || ''}</a>
+                                    </Link>
+                                </Ellipsis>} color="primary" /> : <Ellipsis width={160}>
+                                    <Link href={`/address/${item._source?.from}`}>{item._source?.from || ''}</Link>
+                                </Ellipsis>}
+
+                            </TableCell>
+                            <TableCell>
+
+                                {address == item._source.to ? <Chip label={<Ellipsis width={160}>
+                                    <Link href={`/address/${item._source?.to}`} passHref={true}><a style={{ color: '#ffffff' }}>{item._source?.to || ''}</a></Link>
+                                </Ellipsis>} color="primary" /> : <Ellipsis width={160}>
+                                    <Link href={`/address/${item._source?.to}`}>{item._source?.to || ''}</Link>
+                                </Ellipsis>}
+
+                            </TableCell>
                             <TableCell>{ETxType[item._source?.type]}</TableCell>
-                            <TableCell>{item._source?.value}</TableCell>
+                            <TableCell>{weiToEth(item._source?.value)} eth</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

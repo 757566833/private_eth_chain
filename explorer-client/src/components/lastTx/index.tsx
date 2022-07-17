@@ -6,6 +6,7 @@ import { weiToEth, weiToGwei } from '@/lib/utils/eth';
 import { useClintNavigation } from '@/hooks/navigation';
 import Link from 'next/link';
 import { ETxType } from '@/constant/enum';
+import Ellipsis from '@/lib/ellipsis';
 const LastTx: React.FC = () => {
     const [data, setData] = useState<ITx[]>([])
     const [navigation] = useClintNavigation();
@@ -51,7 +52,10 @@ const LastTx: React.FC = () => {
                             key={item._source?.hash}
                         >
                             <TableCell>
-                                <Box style={{ width: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link href={`/tx/${item._source?.hash}`}>{item._source?.hash}</Link></Box>
+                                <Ellipsis width={160}>
+                                    {<Link href={`/tx/${item._source?.hash}`}>{item._source?.hash||''}</Link>}
+                                </Ellipsis>
+                                {/* <Box style={{ width: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link href={`/tx/${item._source?.hash}`}>{item._source?.hash}</Link></Box> */}
                                 <Box>{timeRender(item._source?.timestamp)}</Box>
                             </TableCell>
                             <TableCell>
@@ -63,8 +67,12 @@ const LastTx: React.FC = () => {
                                 </Box>
                             </TableCell>
                             <TableCell>
-                                <Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>from: <Link href={`/address/${item._source?.from}`}>{item._source?.from}</Link></Box>
-                                <Box style={{ width: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>to: <Link href={`/address/${item._source?.to}`}>{item._source?.to}</Link></Box>
+                                <Ellipsis width={100}>
+                                from: <Link href={`/address/${item._source?.from}`}>{item._source?.from||''}</Link>
+                                </Ellipsis>
+                                <Ellipsis width={100}>
+                                to: <Link href={`/address/${item._source?.to}`}>{item._source?.to||''}</Link>
+                                </Ellipsis>
                             </TableCell>
                             <TableCell>{weiToEth(item._source?.value)} eth</TableCell>
                             <TableCell>{ETxType[item._source?.type]}</TableCell>
