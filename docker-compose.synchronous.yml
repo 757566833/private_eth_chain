@@ -7,3 +7,6 @@ services:
     restart: always
     working_dir: /home/chain/synchronous
     command: /bin/bash -c "./main"
+    environment:
+      - CHAIN_HTTP_URL=${CHAIN_HTTP_URL}
+      - ELASTICSEARCH_PATH=${ELASTICSEARCH_PATH}

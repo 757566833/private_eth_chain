@@ -38,7 +38,7 @@ const Txs: React.FC = () => {
     const { query } = router;
     const { block } = query;
     const func1 = useCallback(async (page: number, block?: string) => {
-        let url = `http://127.0.0.1:9090/txs?page=${page}&size=10`
+        let url = `http://192.168.246.22:9090/txs?page=${page}&size=10`
         if (block) {
             url += `&block=${block}`
         }

@@ -9,3 +9,6 @@ services:
     restart: always
     working_dir: /home/chain/explorer/server
     command: /bin/bash -c "./main"
+    environment:
+      - ELASTICSEARCH_PATH=${ELASTICSEARCH_PATH}
+      - EXPLORER_SERVER_PORT=${EXPLORER_SERVER_PORT}

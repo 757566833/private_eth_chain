@@ -9,3 +9,5 @@ services:
     restart: always
     working_dir: /home/chain/admin
     command: /bin/bash -c "./main"
+    environment:
+      - ADMIN_PORT=${ADMIN_PORT}

@@ -11,7 +11,7 @@ import { receiverTypeRender } from '@/utils/render';
 const LastTx: React.FC = () => {
     const [data, setData] = useState<ITx[]>([])
     const func1 = useCallback(async () => {
-        const res = await fetch('http://127.0.0.1:9090/txs?size=10')
+        const res = await fetch('http://192.168.246.22:9090/txs?size=10')
         const response: IResponseList<ITx> = await res.json()
         const hits = response.hits.hits
         const nextData: ITx[] = []

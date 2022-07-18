@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -306,8 +307,9 @@ func CORSMiddleware() gin.HandlerFunc {
 }
 
 func main() {
+	ELASTICSEARCH_PATH := os.Getenv("ELASTICSEARCH_PATH")
 	ec, err := elasticsearch.NewClient(elasticsearch.Config{Addresses: []string{
-		"http://192.168.31.153:30200",
+		ELASTICSEARCH_PATH,
 	}})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
@@ -322,6 +324,7 @@ func main() {
 		log.Fatalf("Error: %s", res.String())
 	}
 
+	EXPLORER_SERVER_PORT := os.Getenv("EXPLORER_SERVER_PORT")
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.GET("/albums", getAlbums)
@@ -331,5 +334,5 @@ func main() {
 	router.GET("/blocks", getBlocks)
 	router.GET("/txs", getTxs)
 	router.GET("/address/:address", getAddress)
-	router.Run("0.0.0.0:9090")
+	router.Run("0.0.0.0:" + EXPLORER_SERVER_PORT)
 }

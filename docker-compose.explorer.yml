@@ -7,4 +7,4 @@ services:
       - "3020:80"
     restart: always
     environment:
-    - APP_NODE_URL=HTTP://192.168.31.252:8545
+    - APP_NODE_URL=HTTP://192.168.246.22:8545

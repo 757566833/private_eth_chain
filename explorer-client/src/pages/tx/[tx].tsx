@@ -13,7 +13,7 @@ const Block: React.FC = () => {
     const { tx } = query
     const [data, setData] = useState<Partial<ITx>>({})
     const func = useCallback(async (tx: string) => {
-        const res = await fetch(`http://127.0.0.1:9090/tx/${tx}`)
+        const res = await fetch(`http://192.168.246.22:9090/tx/${tx}`)
         const response: ITx = await res.json()
         setData(response)
     }, [])

@@ -8,4 +8,4 @@ services:
       - "3000:3000"
     restart: always
     working_dir: /home/chain/explorer/client
-    command: /bin/bash -c "yarn install && yarn build && yarn start"
+    command: /bin/bash -c "yarn install && yarn start"

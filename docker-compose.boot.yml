@@ -8,4 +8,4 @@ services:
     ports:
       - "30303:30303"
     restart: always
-    entrypoint: geth --datadir /home/chain/boot --networkid 8549140784658 --nat extip:192.168.31.252
+    entrypoint: geth --datadir /home/chain/boot --networkid 8549140784658 --nat extip:192.168.246.22

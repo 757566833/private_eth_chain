@@ -347,9 +347,9 @@ func main() {
 	defer l.Sync()
 
 	logger.Info("logger construction succeeded")
-
+	ELASTICSEARCH_PATH := os.Getenv("ELASTICSEARCH_PATH")
 	ec, err := elasticsearch.NewClient(elasticsearch.Config{Addresses: []string{
-		"http://192.168.31.153:30200",
+		ELASTICSEARCH_PATH,
 	}})
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
@@ -396,8 +396,10 @@ func main() {
 			os.Exit(1)
 		}
 	}
+	CHAIN_HTTP_URL := os.Getenv("CHAIN_HTTP_URL")
+	// todo 这里应该连接ipc更快
 	// _path := "/home/chain/rpc/geth.ipc"
-	_path := "http://192.168.31.252:8545"
+	_path := CHAIN_HTTP_URL
 	// bootClient, err := rpc.Dial(_path)
 	// if err != nil {
 	// 	panic(err)

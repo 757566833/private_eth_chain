@@ -6,7 +6,7 @@ import { timeRender } from "@/lib/time";
 const LastBlock: React.FC = () => {
     const [data, setData] = useState<IBlock[]>([])
     const func1 = useCallback(async () => {
-        const res = await fetch('http://127.0.0.1:9090/blocks?size=10')
+        const res = await fetch('http://192.168.246.22:9090/blocks?size=10')
         const response: IResponseList<IBlock> = await res.json()
         const hits = response.hits.hits
         const nextData: IBlock[] = []
