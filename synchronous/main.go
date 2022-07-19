@@ -33,9 +33,9 @@ type ESBlock struct {
 	Bloom       types.Bloom      `json:"logsBloom"        gencodec:"required"`
 	Difficulty  string           `json:"difficulty"       gencodec:"required"`
 	Number      string           `json:"number"           gencodec:"required"`
-	GasLimit    uint64           `json:"gasLimit"         gencodec:"required"`
-	GasUsed     uint64           `json:"gasUsed"          gencodec:"required"`
-	Time        uint64           `json:"timestamp"        gencodec:"required"`
+	GasLimit    string           `json:"gasLimit"         gencodec:"required"`
+	GasUsed     string           `json:"gasUsed"          gencodec:"required"`
+	Time        string           `json:"timestamp"        gencodec:"required"`
 	Extra       []byte           `json:"extraData"        gencodec:"required"`
 	MixDigest   common.Hash      `json:"mixHash"`
 	Nonce       types.BlockNonce `json:"nonce"`
@@ -48,11 +48,11 @@ type ESBlock struct {
 
 type ESTx struct {
 	Type       byte             `json:"type"                        gencodec:"required"`
-	Nonce      uint64           `json:"nonce"`
+	Nonce      string           `json:"nonce"`
 	GasPrice   string           `json:"gasPrice"                    gencodec:"required"`
 	GasTipCap  string           `json:"maxPriorityFeePerGas"        gencodec:"required"`
 	GasFeeCap  string           `json:"maxFeePerGas"                gencodec:"required"`
-	Gas        uint64           `json:"gas"                         gencodec:"required"`
+	Gas        string           `json:"gas"                         gencodec:"required"`
 	Value      string           `json:"value"                       gencodec:"required"`
 	Data       []byte           `json:"input"                       gencodec:"required"`
 	Number     string           `json:"number"                      gencodec:"required"`
@@ -61,7 +61,7 @@ type ESTx struct {
 	S          string           `json:"s"                           gencodec:"required"`
 	To         *common.Address  `json:"to"                          gencodec:"required"`
 	Hash       common.Hash      `json:"hash"                        gencodec:"required"`
-	Time       uint64           `json:"timestamp"                   gencodec:"required"`
+	Time       string           `json:"timestamp"                   gencodec:"required"`
 	From       common.Address   `json:"from"                        gencodec:"required"`
 	AccessList types.AccessList `json:"accessList"                  gencodec:"required"`
 	IsFake     bool             `json:"isFake"                      gencodec:"required"`
@@ -69,8 +69,8 @@ type ESTx struct {
 	// receipt
 	ReceiptType       uint8        `json:"receiptType"`
 	PostState         []byte       `json:"postState"`
-	Status            uint64       `json:"status"`
-	CumulativeGasUsed uint64       `json:"cumulativeGasUsed"       gencodec:"required"`
+	Status            string       `json:"status"`
+	CumulativeGasUsed string       `json:"cumulativeGasUsed"       gencodec:"required"`
 	Bloom             types.Bloom  `json:"logsBloom"               gencodec:"required"`
 	Logs              []*types.Log `json:"logs"                    gencodec:"required"`
 
@@ -78,12 +78,12 @@ type ESTx struct {
 	// They are stored in the chain database.
 	TxHash          common.Hash    `json:"transactionHash"         gencodec:"required"`
 	ContractAddress common.Address `json:"contractAddress"`
-	GasUsed         uint64         `json:"gasUsed"                 gencodec:"required"`
+	GasUsed         string         `json:"gasUsed"                 gencodec:"required"`
 
 	// Inclusion information: These fields provide information about the inclusion of the
 	// transaction corresponding to this receipt.
 	BlockHash        common.Hash `json:"blockHash"`
-	BlockNumber      *big.Int    `json:"blockNumber"`
+	BlockNumber      string      `json:"blockNumber"`
 	TransactionIndex uint        `json:"transactionIndex"`
 }
 
@@ -198,9 +198,9 @@ func sync(ethclient *ethclient.Client) {
 		esBlock.Bloom = header.Bloom
 		esBlock.Difficulty = header.Difficulty.String()
 		esBlock.Number = header.Number.String()
-		esBlock.GasLimit = header.GasLimit
-		esBlock.GasUsed = header.GasUsed
-		esBlock.Time = header.Time
+		esBlock.GasLimit = new(big.Int).SetUint64(header.GasLimit).String()
+		esBlock.GasUsed = new(big.Int).SetUint64(header.GasUsed).String()
+		esBlock.Time = new(big.Int).SetUint64(header.Time).String()
 		esBlock.Extra = header.Extra
 		esBlock.MixDigest = header.MixDigest
 		esBlock.Nonce = header.Nonce
@@ -245,11 +245,11 @@ func sync(ethclient *ethclient.Client) {
 				txBuf.WriteByte('\n')
 				esTx := new(ESTx)
 				esTx.Type = tx.Type()
-				esTx.Nonce = tx.Nonce()
+				esTx.Nonce = new(big.Int).SetUint64(tx.Nonce()).String()
 				esTx.GasPrice = tx.GasPrice().String()
 				esTx.GasTipCap = tx.GasTipCap().String()
 				esTx.GasFeeCap = tx.GasFeeCap().String()
-				esTx.Gas = tx.Gas()
+				esTx.Gas = new(big.Int).SetUint64(tx.Gas()).String()
 				esTx.Value = tx.Value().String()
 				esTx.Data = tx.Data()
 				esTx.Number = header.Number.String()
@@ -259,7 +259,7 @@ func sync(ethclient *ethclient.Client) {
 				esTx.V = v.String()
 				esTx.R = r.String()
 				esTx.S = s.String()
-				esTx.Time = header.Time
+				esTx.Time = new(big.Int).SetUint64(header.Time).String()
 
 				msg, asMsgErr := tx.AsMessage(types.LatestSignerForChainID(tx.ChainId()), tx.GasPrice())
 				if asMsgErr != nil {
@@ -279,15 +279,15 @@ func sync(ethclient *ethclient.Client) {
 
 				esTx.ReceiptType = receipt.Type
 				esTx.PostState = receipt.PostState
-				esTx.Status = receipt.Status
-				esTx.CumulativeGasUsed = receipt.CumulativeGasUsed
+				esTx.Status = new(big.Int).SetUint64(receipt.Status).String()
+				esTx.CumulativeGasUsed = new(big.Int).SetUint64(receipt.CumulativeGasUsed).String()
 				esTx.Bloom = receipt.Bloom
 				esTx.Logs = receipt.Logs
 				esTx.TxHash = receipt.TxHash
 				esTx.ContractAddress = receipt.ContractAddress
-				esTx.GasUsed = receipt.GasUsed
+				esTx.GasUsed = new(big.Int).SetUint64(receipt.GasUsed).String()
 				esTx.BlockHash = receipt.BlockHash
-				esTx.BlockNumber = receipt.BlockNumber
+				esTx.BlockNumber = receipt.BlockNumber.String()
 				esTx.TransactionIndex = receipt.TransactionIndex
 				paramsStr, paramsErr := json.Marshal(esTx)
 				if paramsErr != nil {
