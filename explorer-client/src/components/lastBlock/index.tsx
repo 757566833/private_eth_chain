@@ -17,12 +17,12 @@ const LastBlock: React.FC = () => {
     }, [])
     useEffect(() => {
         func1()
-    }, [])
+    }, [func1])
     return <>
-        <Typography variant="h6" fontWeight={'bold'}>
+        <Typography color={theme => theme.palette.text.primary} variant="h6" fontWeight={'bold'}>
             最近区块
         </Typography>
-        <Typography variant="body1">
+        <Typography color={theme => theme.palette.text.primary} variant="body1">
             最近开采的区块
         </Typography>
         <TableContainer component={Paper} elevation={0} variant='outlined'>
@@ -51,7 +51,7 @@ const LastBlock: React.FC = () => {
                     ))}
                 </TableBody>
                 <TableFooter>
-                    <TableRow><TableCell><Link href={'/blocks'}>查看全部</Link></TableCell></TableRow>
+                    <TableRow><TableCell><Link href={'/blocks?page=1&size=10'}>查看全部</Link></TableCell></TableRow>
                 </TableFooter>
             </Table>
         </TableContainer>

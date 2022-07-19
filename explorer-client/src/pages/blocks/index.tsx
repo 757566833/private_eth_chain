@@ -3,15 +3,19 @@ import { Box, AppBar, TablePagination, TableFooter, Typography, Paper, TableCont
 import { LastPage, FirstPage, KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material'
 import { IBlock, IResponseList } from "@/services/interface";
 import { timeRender } from "@/lib/time";
-import modal from '@/lib/modal'
+import {ethers} from 'ethers'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useClintNavigation } from '@/hooks/navigation';
 
 const Blocks: React.FC = () => {
     const theme = useTheme();
-    const [page, setPage] = useState(1);
     const [data, setData] = useState<IBlock[]>([])
-
-    const func1 = useCallback(async (page: number) => {
+    const router = useRouter();
+    const { query } = router;
+    const { size='10',page='1' } = query;
+    const [clientNavigation] = useClintNavigation()
+    const func1 = useCallback(async (page: string,size:string) => {
         const res = await fetch(`http://192.168.246.22:9090/blocks?page=${page}&size=10`)
         const response: IResponseList<IBlock> = await res.json()
         const hits = response.hits.hits
@@ -22,21 +26,21 @@ const Blocks: React.FC = () => {
         setData(nextData)
     }, [])
 
-    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setPage(page - 1);
-    };
+    const handleBackButtonClick = useCallback(() => {
+        clientNavigation.push(`/blocks?page=${ethers.BigNumber.from(page).sub(1).toString()}&size=${size}`)
+    },[ clientNavigation, page, size]);
 
-    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setPage(page + 1);
-    };
+    const handleNextButtonClick =useCallback( () => {
+        clientNavigation.push(`/blocks?page=${ethers.BigNumber.from(page).add(1).toString()}&size=${size}`)
+    },[ clientNavigation, page, size]);
 
 
     useEffect(() => {
-        func1(page)
-    }, [page])
+        func1(page.toString(),size.toString())
+    }, [func1, page,size])
 
     return <Box width={1400} margin='0 auto'>
-        <Typography variant="h5" fontWeight={'bold'}>
+        <Typography color={theme => theme.palette.text.primary} variant="h5" fontWeight={'bold'} padding={3}>
             blocks
         </Typography>
         <TableContainer component={Paper} elevation={0} variant='outlined'>
@@ -71,7 +75,7 @@ const Blocks: React.FC = () => {
                             <Box display={'flex'}>
                                 <IconButton
                                     onClick={handleBackButtonClick}
-                                    disabled={page === 0}
+                                    disabled={page.toString() == '1'}
                                     aria-label="previous page"
                                 >
                                     {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}

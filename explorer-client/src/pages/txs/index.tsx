@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import {ethers} from 'ethers'
 import { Box, AppBar, TablePagination, TableFooter, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, List, ListItem, ListItemAvatar, Avatar, ListItemText, Button, useTheme, IconButton } from '@mui/material'
 import { LastPage, FirstPage, KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material'
 import { ITx, IResponseList } from "@/services/interface";
@@ -10,35 +11,18 @@ import Ellipsis from '@/lib/ellipsis';
 import Link from 'next/link';
 import { weiToEth, weiToGwei } from '@/lib/utils/eth';
 import { receiverTypeRender } from '@/utils/render';
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onPageChange: (
-        event: React.MouseEvent<HTMLButtonElement>,
-        newPage: number,
-    ) => void;
-}
+import { useClintNavigation } from '@/hooks/navigation';
 
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onPageChange: (
-        event: React.MouseEvent<HTMLButtonElement>,
-        newPage: number,
-    ) => void;
-}
 
 const Txs: React.FC = () => {
     const theme = useTheme();
-    const [page, setPage] = useState(1);
     const [data, setData] = useState<ITx[]>([])
     const router = useRouter();
     const { query } = router;
-    const { block } = query;
-    const func1 = useCallback(async (page: number, block?: string) => {
-        let url = `http://192.168.246.22:9090/txs?page=${page}&size=10`
+    const { block,size='10',page='1' } = query;
+    const [clientNavigation] = useClintNavigation()
+    const func1 = useCallback(async ( page: string,size:string,block?: string) => {
+        let url = `http://192.168.246.22:9090/txs?page=${page}&size=${size}`
         if (block) {
             url += `&block=${block}`
         }
@@ -52,21 +36,29 @@ const Txs: React.FC = () => {
         setData(nextData)
     }, [])
 
-    const handleBackButtonClick = () => {
-        setPage(page - 1);
-    };
+    const handleBackButtonClick = useCallback(() => {
+        if(block){
+            clientNavigation.push(`/txs?page=${ethers.BigNumber.from(page).sub(1).toString()}&size=${size}&block=${block}`)
+        }else{
+            clientNavigation.push(`/txs?page=${ethers.BigNumber.from(page).sub(1).toString()}&size=${size}`)
+        }
+    },[block, clientNavigation, page, size]);
 
-    const handleNextButtonClick = () => {
-        setPage(page + 1);
-    };
+    const handleNextButtonClick =useCallback( () => {
+        if(block){
+            clientNavigation.push(`/txs?page=${ethers.BigNumber.from(page).add(1).toString()}&size=${size}&block=${block}`)
+        }else{
+            clientNavigation.push(`/txs?page=${ethers.BigNumber.from(page).add(1).toString()}&size=${size}`)
+        }
+    },[block, clientNavigation, page, size]);
 
 
     useEffect(() => {
-        func1(page, block as string | undefined)
-    }, [page, block])
+        func1(page.toString(),size.toString(),block as string |undefined)
+    }, [page, block, size, func1])
 
     return <Box width={1400} margin='0 auto'>
-        <Typography variant="h5" fontWeight={'bold'}>
+        <Typography color={theme => theme.palette.text.primary} variant="h5" fontWeight={'bold'} padding={3}>
             txs
         </Typography>
         <Typography variant="body1">
@@ -122,7 +114,7 @@ const Txs: React.FC = () => {
 
                                 <IconButton
                                     onClick={handleBackButtonClick}
-                                    disabled={page === 0}
+                                    disabled={page.toString() == '1'}
                                     aria-label="previous page"
                                 >
                                     {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}

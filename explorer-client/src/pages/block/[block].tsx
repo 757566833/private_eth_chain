@@ -21,10 +21,10 @@ const Block: React.FC = () => {
         if (block) {
             func(block.toString())
         }
-    }, [block])
+    }, [block, func])
     return <Box width={1400} margin='0 auto'>
-        <Typography variant="h5" fontWeight={'bold'}>
-            block#{block}
+         <Typography color={theme => theme.palette.text.primary} variant="h5" fontWeight={'bold'} padding={3}>
+            block
         </Typography>
         <Paper variant='outlined'>
             <List>

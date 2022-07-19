@@ -24,7 +24,6 @@ export const useClintNavigation = ()=>{
         /* eslint-disable-next-line react-hooks/exhaustive-deps */
     },[])
     const router =useMemo(()=>{
-
         return{
             push
         }

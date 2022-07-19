@@ -22,9 +22,9 @@ const Block: React.FC = () => {
             func(tx.toString())
         }
 
-    }, [tx])
+    }, [func, tx])
     return <Box width={1400} margin='0 auto'>
-        <Typography variant="h5" fontWeight={'bold'}>
+        <Typography color={theme => theme.palette.text.primary} variant="h5" fontWeight={'bold'} padding={3}>
             tx
         </Typography>
         <Paper variant='outlined'>
