@@ -35,7 +35,7 @@ type ESBlock struct {
 	Number      string           `json:"number"           gencodec:"required"`
 	GasLimit    string           `json:"gasLimit"         gencodec:"required"`
 	GasUsed     string           `json:"gasUsed"          gencodec:"required"`
-	Time        string           `json:"timestamp"        gencodec:"required"`
+	Time        uint64           `json:"timestamp"        gencodec:"required"`
 	Extra       []byte           `json:"extraData"        gencodec:"required"`
 	MixDigest   common.Hash      `json:"mixHash"`
 	Nonce       types.BlockNonce `json:"nonce"`
@@ -61,7 +61,7 @@ type ESTx struct {
 	S          string           `json:"s"                           gencodec:"required"`
 	To         *common.Address  `json:"to"                          gencodec:"required"`
 	Hash       common.Hash      `json:"hash"                        gencodec:"required"`
-	Time       string           `json:"timestamp"                   gencodec:"required"`
+	Time       uint64           `json:"timestamp"                   gencodec:"required"`
 	From       common.Address   `json:"from"                        gencodec:"required"`
 	AccessList types.AccessList `json:"accessList"                  gencodec:"required"`
 	IsFake     bool             `json:"isFake"                      gencodec:"required"`
@@ -200,7 +200,7 @@ func sync(ethclient *ethclient.Client) {
 		esBlock.Number = header.Number.String()
 		esBlock.GasLimit = new(big.Int).SetUint64(header.GasLimit).String()
 		esBlock.GasUsed = new(big.Int).SetUint64(header.GasUsed).String()
-		esBlock.Time = new(big.Int).SetUint64(header.Time).String()
+		esBlock.Time = header.Time
 		esBlock.Extra = header.Extra
 		esBlock.MixDigest = header.MixDigest
 		esBlock.Nonce = header.Nonce
@@ -259,7 +259,7 @@ func sync(ethclient *ethclient.Client) {
 				esTx.V = v.String()
 				esTx.R = r.String()
 				esTx.S = s.String()
-				esTx.Time = new(big.Int).SetUint64(header.Time).String()
+				esTx.Time = header.Time
 
 				msg, asMsgErr := tx.AsMessage(types.LatestSignerForChainID(tx.ChainId()), tx.GasPrice())
 				if asMsgErr != nil {
