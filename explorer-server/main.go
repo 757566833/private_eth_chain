@@ -215,7 +215,37 @@ func getTxs(c *gin.Context) {
 	// }
 	c.IndentedJSON(res.StatusCode, response)
 }
-
+func getBlockByHash(c *gin.Context) {
+	hash := c.Param("hash")
+	if hash == "" {
+		c.IndentedJSON(http.StatusBadRequest, "")
+	}
+	body := `{
+		"query": {
+		  "term": {
+			"blockHash": {
+			  "value": "` + hash + `"
+			}
+		  }
+		}
+	  }
+	`
+	req := esapi.SearchRequest{
+		Index: []string{"block"},
+		Body:  strings.NewReader(body),
+	}
+	res, err := req.Do(context.Background(), esClient)
+	if err != nil {
+		panic(err)
+	}
+	defer res.Body.Close()
+	var response any
+	err2 := json.NewDecoder(res.Body).Decode(&response)
+	if err2 != nil {
+		panic(err2)
+	}
+	c.IndentedJSON(res.StatusCode, response)
+}
 func getAddress(c *gin.Context) {
 	address := c.Param("address")
 	if address == "" {
@@ -334,5 +364,6 @@ func main() {
 	router.GET("/blocks", getBlocks)
 	router.GET("/txs", getTxs)
 	router.GET("/address/:address", getAddress)
+	router.GET("/block/hash/:hash", getBlockByHash)
 	router.Run("0.0.0.0:" + EXPLORER_SERVER_PORT)
 }

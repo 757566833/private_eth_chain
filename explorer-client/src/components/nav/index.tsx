@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import { useClintNavigation } from '@/hooks/navigation';
 import { useMode } from '@/context/mode';
 import { Search } from '@mui/icons-material';
+import { IBlock, IResponseList } from '@/services/interface';
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
     height: 34,
@@ -60,7 +61,15 @@ const Nav: React.FC = () => {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setValue(e.target.value)
     }, [])
-   
+    const hash = useCallback(async (hash:string)=>{
+        const res = await fetch(`http://192.168.246.22:9090/block/hash/${hash}`)
+        const response: IResponseList<IBlock> = await res.json()
+        if(response.hits.hits.length==0){
+            navigation.push(`/tx/${hash}`)
+        }else{
+            navigation.push(`/block/${hash}`)
+        }
+    },[navigation])
     const handleSearch = useCallback(() => {
         // navigation.push(`/block/${value}`)
         // return 
@@ -70,7 +79,7 @@ const Nav: React.FC = () => {
                 navigation.push(`/address/${value}`)
                 break;
             case 66:
-                navigation.push(`/tx/${value}`)
+                hash(value)
                 break;
             case 0:
                 break;
@@ -79,7 +88,7 @@ const Nav: React.FC = () => {
                 navigation.push(`/block/${value}`)
                 break;
         }
-    }, [navigation, value])
+    }, [hash, navigation, value])
     const handleKeyDown = useCallback((e:React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)=>{
         if(e.key=="Enter"){
             console.log(e)
@@ -105,7 +114,7 @@ const Nav: React.FC = () => {
 
                         <InputBase
                             sx={{ ml: 1, flex: 1 }}
-                            placeholder="高度/地址/交易"
+                            placeholder="高度/地址/交易/块hash"
                             value={value}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}

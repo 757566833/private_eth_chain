@@ -36,9 +36,11 @@ export interface IBlock {
         "receiptsRoot": string,
         "sha3Uncles": string,
         "stateRoot": string,
-        "timestamp": 0,
+        "timestamp": number,
         "transactionsRoot": string,
-        "txns": 0
+        "txns": number
+        "blockHash":string
+        "size":string
     },
     "_type": string,
     "sort": number[]

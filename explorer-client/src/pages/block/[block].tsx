@@ -45,6 +45,20 @@ const Block: React.FC = () => {
                 <Divider />
                 <ListItem>
                     <ListItemIcon sx={{ width: 280 }}>
+                    blockHash 
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.blockHash} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
+                    size 块大小
+                    </ListItemIcon>
+                    <ListItemText primary={data._source?.size} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemIcon sx={{ width: 280 }}>
                         _txns 交易数量
                     </ListItemIcon>
 

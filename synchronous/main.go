@@ -22,7 +22,7 @@ import (
 var esClient *elasticsearch.Client
 var logger *zap.Logger
 
-// TODO
+// ESBlock TODO
 type ESBlock struct {
 	ParentHash  common.Hash      `json:"parentHash"       gencodec:"required"`
 	UncleHash   common.Hash      `json:"sha3Uncles"       gencodec:"required"`
@@ -43,7 +43,9 @@ type ESBlock struct {
 	// BaseFee was added by EIP-1559 and is ignored in legacy headers.
 	BaseFee *big.Int `json:"baseFeePerGas" rlp:"optional"`
 
-	Txns int `json:"txns"        gencodec:"required"`
+	Txns      int         `json:"txns"                  gencodec:"required"`
+	BlockHash common.Hash `json:"blockHash"             gencodec:"required"`
+	Size      string      `json:"size"                  gencodec:"required"`
 }
 
 type ESTx struct {
@@ -140,11 +142,9 @@ func sync(ethclient *ethclient.Client) {
 		startStr = "0"
 	}
 	defer esBlockResponse.Body.Close()
-	// var block []any
 	if esBlockResponse.StatusCode >= 300 {
 		startStr = "0"
 	} else {
-		// fmt.Print(esBlockResponse.Body)
 		byt, err := io.ReadAll(esBlockResponse.Body)
 
 		if err != nil {
@@ -164,12 +164,8 @@ func sync(ethclient *ethclient.Client) {
 		logger.Error("区块链获取最新区块报错")
 		panic(err)
 	}
-
-	// 57269
 	length := new(big.Int).SetUint64(num)
 	length.Sub(length, big.NewInt(1))
-
-	// length := big.NewInt(57269)
 	var startBg *big.Int
 	var b bool
 	startBg, b = new(big.Int).SetString(startStr, 10)
@@ -206,6 +202,8 @@ func sync(ethclient *ethclient.Client) {
 		esBlock.Nonce = header.Nonce
 		esBlock.BaseFee = header.BaseFee
 		esBlock.Txns = leng
+		esBlock.BlockHash = msg.Hash()
+		esBlock.Size = msg.Size().String()
 
 		blockBuf, err := json.Marshal(esBlock)
 		if err != nil {
