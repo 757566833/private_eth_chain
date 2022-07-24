@@ -1,11 +1,13 @@
 version: '3'
 services:
   explorerClient:
-    image: node:14.19.3
+    image: nginx:1.23.1
+    user: '0'
     volumes:
-      - ./chain:/home/chain
+      - ./chain/explorer/client/html:/home/chain/explorer/client/html
+      - ./chain/explorer/client/conf.d:/etc/nginx/conf.d
     ports:
-      - "3000:3000"
+      - "3000:80"
     restart: always
-    working_dir: /home/chain/explorer/client
-    command: /bin/bash -c "yarn install && yarn start"
+    # working_dir: /home/chain/explorer/client
+    # command: /bin/bash -c "yarn install && yarn start"
