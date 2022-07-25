@@ -16,7 +16,7 @@ const Blocks: React.FC = () => {
     const { size='10',page='1' } = query;
     const [clientNavigation] = useClintNavigation()
     const func1 = useCallback(async (page: string,size:string) => {
-        const res = await fetch(`http://192.168.246.22:9090/blocks?page=${page}&size=10`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RESTFUL}/blocks?page=${page}&size=10`)
         const response: IResponseList<IBlock> = await res.json()
         const hits = response.hits.hits
         const nextData: IBlock[] = []

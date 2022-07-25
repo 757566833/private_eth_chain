@@ -62,7 +62,7 @@ const Nav: React.FC = () => {
         setValue(e.target.value)
     }, [])
     const hash = useCallback(async (hash:string)=>{
-        const res = await fetch(`http://192.168.246.22:9090/block/hash/${hash}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RESTFUL}/block/hash/${hash}`)
         const response: IResponseList<IBlock> = await res.json()
         if(response.hits.hits.length==0){
             navigation.push(`/tx/${hash}`)

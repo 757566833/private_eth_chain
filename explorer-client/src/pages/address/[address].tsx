@@ -21,7 +21,7 @@ const Address: React.FC = () => {
     const { query } = router
     const { address ,size='10',page='1' } = query
     const func1 = useCallback(async (page: string,size:string, address: string) => {
-        const res = await fetch(`http://192.168.246.22:9090/address/${address}?page=${page}&size=${size}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RESTFUL}/address/${address}?page=${page}&size=${size}`)
         const response: IResponseList<ITx> = await res.json()
         const hits = response.hits.hits
         const nextData: ITx[] = []

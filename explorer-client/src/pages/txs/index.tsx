@@ -22,7 +22,7 @@ const Txs: React.FC = () => {
     const { block,size='10',page='1' } = query;
     const [clientNavigation] = useClintNavigation()
     const func1 = useCallback(async ( page: string,size:string,block?: string) => {
-        let url = `http://192.168.246.22:9090/txs?page=${page}&size=${size}`
+        let url = `${process.env.NEXT_PUBLIC_RESTFUL}/txs?page=${page}&size=${size}`
         if (block) {
             url += `&block=${block}`
         }
