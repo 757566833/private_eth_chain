@@ -246,6 +246,29 @@ npm run build
 docker-compose -f docker-compose.explorer.client.yml up -d
 ```
 
+# ipfs启动过程
+1. 启动服务
+```
+docker-compose -f docker-compose.ipfs.yml up -d
+```
+2. 改成私有（可选）
+```
+docker exec ipfs-node1 ipfs bootstrap rm all
+```
+3. 测试上传文件
+```
+// 可以把任意文件传到./chain/node1/upload下，以下代码复制了demo.png
+docker exec ipfs-node1 ipfs add /data/upload/demo.png
+// 大概会返回一个hash
+13.07 KiB / 13.07 KiB  100.00%added QmcRGfsyA8JnazEHjFRrc4CXzwrqsWEVmTFhjRbzTkSbSo demo.png
+```
+4. 测试下载文件
+```
+docker exec ipfs-node1 ipfs get <哈希> -o /data/down/demo.png
+// 例如
+docker exec ipfs-node1 ipfs get QmcRGfsyA8JnazEHjFRrc4CXzwrqsWEVmTFhjRbzTkSbSo -o /data/down/demo.png
+```
+> 进行第二步以后无法打开webui，看社区回复是 webui要在可以连接到其他节点的情况下才能使用，笔者尚未明确原因
 
 # todo
 1. 区块链浏览器 还差一个 total difficult 的字段， 还差通过input data 解析合同调用的方法名功能
@@ -261,6 +284,7 @@ docker-compose -f docker-compose.explorer.client.yml up -d
 - Byzantium:                   0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md)
 - Constantinople:              0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md)
 - Petersburg:                  0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md)
-- Istanbul:                    <nil> (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md)
-- Berlin:                      <nil> (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md)
-- London:                      <nil> (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md)
+- Istanbul:                    尚未支持 (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md)
+- Berlin:                      尚未支持 (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md)
+- London:                      尚未支持 (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md)
+> geth原本就这样 继续支持要本地硬分叉

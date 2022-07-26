@@ -1,0 +1,17 @@
+version: '3'
+services:
+  ipfs1:
+    image: ipfs/go-ipfs:v0.14.0
+    container_name: ipfs-node1
+    volumes:
+      - ./chain/ipfs/node1/export:/export
+      - ./chain/ipfs/node1/data:/data/ipfs
+      - ./chain/ipfs/node1/down:/data/down
+      - ./chain/ipfs/node1/upload:/data/upload
+    restart: always
+    # environment:
+    #   - IPFS_SWARM_KEY=57e23b88fd046d94f736409a7035d7ded229da23085901f4cf039063aa98c0a1
+    ports:
+      - "0.0.0.0:8080:8080"
+      - "0.0.0.0:5001:5001"
+      - "4001:4001"
