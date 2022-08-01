@@ -1,9 +1,10 @@
 package db
 
 import (
-	"github.com/elastic/go-elasticsearch/v7"
 	"log"
 	"os"
+
+	"github.com/elastic/go-elasticsearch/v7"
 )
 
 var EsClient *elasticsearch.Client
@@ -25,5 +26,31 @@ func InitEsClient() {
 	defer res.Body.Close()
 	if res.IsError() {
 		log.Fatalf("Error: %s", res.String())
+	}
+	blockResponse, err := ec.Indices.Exists([]string{"block"})
+	if err != nil {
+		log.Fatalf("Error exists the block index: %s", err)
+	}
+	if blockResponse.StatusCode == 404 {
+		var createIndexResponse, err = ec.Indices.Create("block")
+		if err != nil {
+			log.Fatalf("Error create the block index: %s", err)
+		}
+		if createIndexResponse.IsError() {
+			log.Fatalf("Error create the block index: %s", err)
+		}
+	}
+	txResponse, err := ec.Indices.Exists([]string{"tx"})
+	if err != nil {
+		log.Fatalf("Error exists the tx index: %s", err)
+	}
+	if txResponse.StatusCode == 404 {
+		var createIndexResponse, err = ec.Indices.Create("tx")
+		if err != nil {
+			log.Fatalf("Error create the tx index: %s", err)
+		}
+		if createIndexResponse.IsError() {
+			log.Fatalf("Error create the tx index: %s", err)
+		}
 	}
 }

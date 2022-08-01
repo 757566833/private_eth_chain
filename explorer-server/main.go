@@ -14,6 +14,6 @@ func main() {
 	log.InitLogger()
 	ExplorerServerPort := os.Getenv("EXPLORER_SERVER_PORT")
 	router := route.InitRouter()
-	sync.Sync()
+	go sync.Sync()
 	router.Run("0.0.0.0:" + ExplorerServerPort)
 }
