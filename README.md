@@ -228,17 +228,12 @@ docker-compose -f docker-compose.explorer.yml up -d
 
 > 如果不了解es仍想体验，提供了docker-compose.es.yml 可以启动下，暂时顶一顶
 
-1. 同步服务
-```
-// 打包一下  synchronous项目  在chain文件夹下新建 synchronous ，并将打包好的main文件放入
-docker-compose -f docker-compose.synchronous.yml up -d
-```
-2. 启动区块链后端
+1. 启动区块链后端
 ```
 // 打包服务启动后 打包 explorer-server文件夹的go服务  在chain文件夹下新建 explorer/server ，并将打包好的main文件放入
 docker-compose -f docker-compose.explorer.server.yml up -d
 ```
-3. 启动区块链前端
+2. 启动区块链前端
 ```
 // 打包服务启动后 explorer-client 下执行 
 npm run build
