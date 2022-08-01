@@ -198,7 +198,7 @@ docker-compose -f docker-compose.admin.yml up -d
 // 第二种 内部查看 新建终端
 docker exec <imageName> -it  sh 
 // 执行命令进入 boot的js控制台
-geth attact /home/chain/boot/geth.ipc
+geth attach /home/chain/boot/geth.ipc
 // 获取enr
 admin.nodeInfo.enr
 ```
