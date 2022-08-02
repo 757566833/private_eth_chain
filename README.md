@@ -188,8 +188,95 @@
 
 ```
 
+> config部分为了没有引入bip1559
+
 6.1.2 Ethash 部分  
-// todo
+   ```json
+   {
+    "config": {
+      "chainId": 8549140784658,
+      "homesteadBlock": 0,
+      "eip150Block": 0,
+      "eip155Block": 0,
+      "eip158Block": 0,
+      "byzantiumBlock": 0,
+      "constantinopleBlock": 0,
+      "petersburgBlock": 0,
+      "istanbulBlock": 0,
+      "berlinBlock": 0,
+      "londonBlock": 0,
+      "ethash": {}
+    },
+    "difficulty": "1",
+    "gasLimit": "8000000",
+    "alloc": {
+    "7eb8404F07Daf2405D458F2eA1eB77409d524d7F": {
+      "balance": "1000000000000000000000"
+    },
+    "68F3b9eE1E9aC8704591D0B185171113b7A8cA59": {
+      "balance": "1000000000000000000000"
+    },
+    "a4FF0a8D37342daf2a92A8aad710292A10c4610E": {
+      "balance": "1000000000000000000000"
+    },
+    "8D3bDAde6fF60ad610029435d0ce03F09fF43d88": {
+      "balance": "1000000000000000000000"
+    },
+    "bF52e9a726798F4023b29BbE0043D127d28Ea4B3": {
+      "balance": "1000000000000000000000"
+    },
+    "7d33137B979BB4Ae5D30f454003330CF489f186e": {
+      "balance": "1000000000000000000000"
+    },
+    "e9Ee0FA08F9DaB90FdEdD00816A08c473552394E": {
+      "balance": "1000000000000000000000"
+    },
+    "7dc8293C8928FA0F6704aD469FfC737b06bAF5b7": {
+      "balance": "1000000000000000000000"
+    },
+    "db19edB85Db5fcf7cA762356Ca0C37C7b35A9827": {
+      "balance": "1000000000000000000000"
+    },
+    "299261BDB619B46B111068a8cF29A96b7417e29E": {
+      "balance": "1000000000000000000000"
+    },
+    "00F218e2Cc15C3F88206a217F135468a7dfD639A": {
+      "balance": "1000000000000000000000"
+    },
+    "8Ed57a034693A814AF040E1b830F1bC69c3936da": {
+      "balance": "1000000000000000000000"
+    },
+    "Cda28FF82F6Bf1E49ae526Dc934DFB424a9C144d": {
+      "balance": "1000000000000000000000"
+    },
+    "30E8F6Cd1e2B901DEDF2f1d2afEa924113c71e21": {
+      "balance": "1000000000000000000000"
+    },
+    "Cde39aeaE924df3F802138b025eD5ca5042f0B46": {
+      "balance": "1000000000000000000000"
+    },
+    "4dDDCa80C4b061394C42bFB9A9eF2893dd36617d": {
+      "balance": "1000000000000000000000"
+    },
+    "cb42f2C850D9CC0DD000F9F6d99d84D0002D5421": {
+      "balance": "1000000000000000000000"
+    },
+    "2a8C97b63e197b2eB293F3E9A15a84D634e7cc9B": {
+      "balance": "1000000000000000000000"
+    },
+    "97B672a69683ee5a560DC423Ef99f6c1cfFcdd8f": {
+      "balance": "1000000000000000000000"
+    },
+    "05e89A2f96Ee1d43Ab99AB59898C8eB544346690": {
+      "balance": "1000000000000000000000"
+    },
+    "E7bC3ADdB4c41Dc236fEFAdc5FCCCF539F7cA7bb": {
+      "balance": "1000000000000000000000"
+    }
+  }
+  }
+   ```
+
 
 6.2 加入区块链
 // todo
@@ -315,17 +402,30 @@ docker exec ipfs-node1 ipfs get QmcRGfsyA8JnazEHjFRrc4CXzwrqsWEVmTFhjRbzTkSbSo -
 
 ## 备注
 
-默认支持的硬分叉
+poa (Clique) 本文配置中默认支持的硬分叉
 
-- Homestead:                   0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md>)
-- Tangerine Whistle (EIP 150): 0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md>)
-- Spurious Dragon/1 (EIP 155): 0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
-- Spurious Dragon/2 (EIP 158): 0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
-- Byzantium:                   0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md>)
-- Constantinople:              0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md>)
-- Petersburg:                  0        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md>)
+- Homestead:                   支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md>)
+- Tangerine Whistle (EIP 150): 支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md>)
+- Spurious Dragon/1 (EIP 155): 支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
+- Spurious Dragon/2 (EIP 158): 支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
+- Byzantium:                   支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md>)
+- Constantinople:              支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md>)
+- Petersburg:                  支持     (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md>)
 - Istanbul:                    尚未支持 (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md>)
 - Berlin:                      尚未支持 (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md>)
 - London:                      尚未支持 (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md>)
 
-> geth原本就这样 继续支持要本地硬分叉
+> poa没有挖矿奖励 不适合支持bip1559
+
+pow (Ethash) 本文配置中默认支持的硬分叉
+
+- Homestead:                   支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md>)
+- Tangerine Whistle (EIP 150): 支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md>)
+- Spurious Dragon/1 (EIP 155): 支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
+- Spurious Dragon/2 (EIP 158): 支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md>)
+- Byzantium:                   支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md>)
+- Constantinople:              支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md>)
+- Petersburg:                  支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md>)
+- Istanbul:                    支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md>)
+- Berlin:                      支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md>)
+- London:                      支持        (<https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md>)
