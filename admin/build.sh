@@ -6,3 +6,6 @@ go build .\main.go
 $Env:GOARCH = "amd64"
 $Env:GOOS = "linux"
 go build .\main.go
+
+#mac
+GOOS=linux GOARCH=amd64 go build main.go
